@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇭🇰 香港之旅 🎂</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ff6699">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="香港之旅">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇭🇰</text></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
+        
+        * {
+            font-family: 'Noto Serif TC', serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 215, 0, 0.01) 2px, rgba(255, 215, 0, 0.01) 4px),
+                radial-gradient(circle at 20% 80%, rgba(255, 0, 100, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+        }
+        
+        @keyframes subtleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 3px currentColor, 0 0 6px currentColor;
+            }
+            50% { 
+                text-shadow: 0 0 2px currentColor, 0 0 4px currentColor;
+            }
+        }
+        
+        .neon-pink {
+            color: #ff6699;
+            animation: subtleGlow 4s ease-in-out infinite;
+        }
+        
+        .neon-yellow {
+            color: #ffcc66;
+            animation: subtleGlow 4.5s ease-in-out infinite;
+        }
+        
+        .neon-cyan {
+            color: #66cccc;
+            animation: subtleGlow 5s ease-in-out infinite;
+        }
+        
+        .neon-green {
+            color: #99dd99;
+            animation: subtleGlow 4.8s ease-in-out infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .retro-card {
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.8) 0%, rgba(0, 20, 30, 0.8) 100%);
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #ff0080, #ffd700, #00ffff, #ff0080) 1;
+            box-shadow: 0 0 10px rgba(255, 0, 128, 0.1), inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .retro-card:hover {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.15), 0 0 20px rgba(0, 255, 255, 0.1), inset 0 0 30px rgba(0, 0, 0, 0.5);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        .food-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .food-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .food-item:active {
+            transform: scale(0.98);
+        }
+        
+        .timeline-item {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.7) 0%, rgba(20, 20, 20, 0.8) 100%);
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 10px rgba(255, 215, 0, 0.15);
+        }
+        
+        .timeline-highlight {
+            background: linear-gradient(135deg, rgba(60, 0, 30, 0.7) 0%, rgba(0, 30, 60, 0.7) 100%);
+            border: 2px solid;
+            box-shadow: 0 0 10px rgba(255, 0, 128, 0.15), 0 0 15px rgba(0, 255, 255, 0.08);
+        }
+        
+        .tab-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 9999px;
+            padding: 2px;
+            background: linear-gradient(45deg, transparent, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tab-btn:hover::before {
+            opacity: 1;
+            background: linear-gradient(45deg, #ff0080, #ffd700, #00ffff);
+        }
+        
+        .hk-pattern {
+            background-image: 
+                repeating-linear-gradient(45deg, transparent 0px, transparent 10px, rgba(255, 215, 0, 0.02) 10px, rgba(255, 215, 0, 0.02) 20px),
+                repeating-linear-gradient(-45deg, transparent 0px, transparent 10px, rgba(255, 0, 128, 0.02) 10px, rgba(255, 0, 128, 0.02) 20px);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .glow-box {
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+        
+        .sans-font {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        /* 手機字體調整 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            h3 {
+                font-size: 1.25rem !important;
+            }
+            h4 {
+                font-size: 1.1rem !important;
+            }
+            p, span, div {
+                font-size: 0.9rem !important;
+            }
+            .text-6xl, .text-7xl, .text-8xl {
+                font-size: 3rem !important;
+            }
+            .text-5xl {
+                font-size: 2rem !important;
+            }
+            .text-4xl {
+                font-size: 1.75rem !important;
+            }
+            .text-3xl {
+                font-size: 1.5rem !important;
+            }
+            .text-2xl {
+                font-size: 1.25rem !important;
+            }
+            .text-xl {
+                font-size: 1.1rem !important;
+            }
+            .text-lg {
+                font-size: 1rem !important;
+            }
+        }
+        
+        /* 地圖樣式 */
+        #map {
+            height: 500px;
+            border-radius: 1rem;
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #ff0080, #ffd700, #00ffff, #ff0080) 1;
+        }
+        
+        @media (max-width: 768px) {
+            #map {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    
+    <!-- Header -->
+    <header class="relative py-16 px-6 overflow-hidden">
+        <div class="absolute inset-0 hk-pattern opacity-30"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-red-950/50 via-transparent to-cyan-950/50"></div>
+        
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-6 mb-6 float-anim">
+                    <span class="text-7xl md:text-8xl">🇭🇰</span>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black mb-6 neon-pink" style="letter-spacing: 0.15em; font-family: 'Noto Serif TC', serif;">
+                    香港之旅
+                </h1>
+                <div class="text-3xl md:text-4xl font-bold mb-4 neon-yellow" style="letter-spacing: 0.3em; font-family: 'Noto Serif TC', serif;">
+                    浪漫雙人港式假期
+                </div>
+                <div class="text-xl md:text-2xl neon-cyan sans-font" style="letter-spacing: 0.2em;">
+                    ✦ HONG KONG SPECIAL JOURNEY ✦
+                </div>
+                <div class="mt-8 flex items-center justify-center gap-4">
+                    <span class="text-5xl float-anim" style="animation-delay: 0.5s;">🎂</span>
+                    <span class="text-5xl float-anim" style="animation-delay: 1s;">🌃</span>
+                    <span class="text-5xl float-anim" style="animation-delay: 1.5s;">🍜</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 backdrop-blur-xl bg-black/80 border-b-2 border-yellow-500/30">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex gap-3 overflow-x-auto">
+                <button onclick="showTab('itinerary')" id="tab-itinerary" class="tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gradient-to-r from-red-600 to-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-500/50">
+                    📅 行程
+                </button>
+                <button onclick="showTab('map')" id="tab-map" class="tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gray-900 text-green-400 border-2 border-gray-700">
+                    🗺️ 地圖
+                </button>
+                <button onclick="showTab('food')" id="tab-food" class="tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gray-900 text-yellow-400 border-2 border-gray-700">
+                    🍽️ 美食
+                </button>
+                <button onclick="showTab('spots')" id="tab-spots" class="tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gray-900 text-cyan-400 border-2 border-gray-700">
+                    📸 景點
+                </button>
+                <button onclick="showTab('info')" id="tab-info" class="tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gray-900 text-pink-400 border-2 border-gray-700">
+                    ⚠️ 資訊
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        
+        <!-- Map Tab -->
+        <div id="content-map" class="hidden fade-in">
+            <div class="retro-card rounded-3xl p-8 mb-8">
+                <h2 class="text-5xl font-black mb-6 neon-green text-center" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                    🗺️ 互動式地圖
+                </h2>
+                <p class="text-center text-gray-400 mb-8 text-lg">點擊標記查看詳細資訊</p>
+                <div id="map"></div>
+            </div>
+            
+            <div class="retro-card rounded-3xl p-8">
+                <h3 class="text-3xl font-black mb-6 neon-yellow text-center" style="font-family: 'Noto Serif TC', serif;">
+                    📍 快速導航
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=22.3193,114.1694" target="_blank" class="retro-card rounded-xl p-4 text-center hover:scale-105 transition-all">
+                        <div class="text-3xl mb-2">🏨</div>
+                        <div class="text-white font-bold">木的地酒店</div>
+                        <div class="text-gray-400 text-sm mt-1">佐敦</div>
+                    </a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=22.3964,114.1095" target="_blank" class="retro-card rounded-xl p-4 text-center hover:scale-105 transition-all">
+                        <div class="text-3xl mb-2">🌃</div>
+                        <div class="text-white font-bold">太平山頂</div>
+                        <div class="text-gray-400 text-sm mt-1">欣賞夜景</div>
+                    </a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=22.3350,114.1560" target="_blank" class="retro-card rounded-xl p-4 text-center hover:scale-105 transition-all">
+                        <div class="text-3xl mb-2">🌈</div>
+                        <div class="text-white font-bold">彩虹邨</div>
+                        <div class="text-gray-400 text-sm mt-1">打卡勝地</div>
+                    </a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=22.2840,114.1577" target="_blank" class="retro-card rounded-xl p-4 text-center hover:scale-105 transition-all">
+                        <div class="text-3xl mb-2">✈️</div>
+                        <div class="text-white font-bold">香港國際機場</div>
+                        <div class="text-gray-400 text-sm mt-1">HKG</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Itinerary Tab -->
+        <div id="content-itinerary" class="space-y-10 fade-in">
+            
+            <!-- Day 1 -->
+            <div class="retro-card rounded-3xl overflow-hidden">
+                <div class="bg-gradient-to-r from-red-900 via-red-800 to-pink-900 px-8 py-6 hk-pattern relative">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <h2 class="text-4xl font-black neon-yellow relative z-10" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                        <span class="float-anim inline-block">✈️</span> 11/2 (六) 出發日
+                    </h2>
+                </div>
+                
+                <div class="p-8 space-y-4">
+                    <div class="timeline-item border-yellow-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">✈️</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-yellow-400 font-bold text-xl mb-1">⏰ 11:50</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">桃園機場起飛</h4>
+                                <p class="text-gray-400 text-lg">HX253 航班</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-cyan-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">🛬</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-cyan-400 font-bold text-xl mb-1">⏰ 14:00</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">抵達香港國際機場</h4>
+                                <p class="text-gray-400 text-lg">準備開始精彩旅程！</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-green-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">🚌</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-green-400 font-bold text-xl mb-1">⏰ 14:30</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">搭乘城巴 A21/A22</h4>
+                                <p class="text-gray-400 text-lg">前往佐敦地區</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-purple-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">🏨</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-purple-400 font-bold text-xl mb-1">⏰ 15:30</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">木的地酒店 Check-in</h4>
+                                <p class="text-gray-400 text-lg">放置行李，稍作休息</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-highlight border-pink-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-pink-500 to-red-600 rounded-full p-3 glow-box float-anim">
+                                <span class="text-3xl">🥟</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-pink-300 font-bold text-xl mb-1">⏰ 16:00 ⭐</div>
+                                <h4 class="text-2xl font-black text-white mb-1 neon-pink" style="text-shadow: none;">港式下午茶時光</h4>
+                                <p class="text-pink-200 text-lg">品嚐道地港點或下午茶</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-highlight border-cyan-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full p-3 glow-box float-anim" style="animation-delay: 0.5s;">
+                                <span class="text-3xl">🌃</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-cyan-300 font-bold text-xl mb-1">⏰ 18:00 ⭐</div>
+                                <h4 class="text-2xl font-black text-white mb-1 neon-cyan" style="text-shadow: none;">夜景巡禮</h4>
+                                <p class="text-cyan-200 text-lg">太平山頂 or 維多利亞港夜景</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-highlight border-yellow-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full p-3 glow-box float-anim" style="animation-delay: 1s;">
+                                <span class="text-3xl">🍻</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-yellow-300 font-bold text-xl mb-1">⏰ 21:00 ⭐</div>
+                                <h4 class="text-2xl font-black text-white mb-1 neon-yellow" style="text-shadow: none;">蘭桂坊微醺夜</h4>
+                                <p class="text-yellow-200 text-lg">體驗香港夜生活</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-gray-600 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-gray-600 to-gray-700 rounded-full p-3">
+                                <span class="text-3xl">😴</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-gray-500 font-bold text-xl mb-1">⏰ 23:00</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">返回飯店休息</h4>
+                                <p class="text-gray-400 text-lg">為明天儲備體力</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="retro-card rounded-3xl overflow-hidden">
+                <div class="bg-gradient-to-r from-purple-900 via-pink-800 to-purple-900 px-8 py-6 hk-pattern relative">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <h2 class="text-4xl font-black neon-cyan relative z-10" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                        <span class="float-anim inline-block">📸</span> 11/3 (日) 返程日
+                    </h2>
+                </div>
+                
+                <div class="p-8 space-y-4">
+                    <div class="timeline-item border-orange-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">🍳</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-orange-400 font-bold text-xl mb-1">⏰ 09:00</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">享用早餐 & 退房</h4>
+                                <p class="text-gray-400 text-lg">把握最後的港式早晨</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-highlight border-pink-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 rounded-full p-3 glow-box float-anim">
+                                <span class="text-3xl">🌈</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-pink-300 font-bold text-xl mb-1">⏰ 10:00 ⭐</div>
+                                <h4 class="text-2xl font-black text-white mb-1 neon-pink" style="text-shadow: none;">彩虹邨打卡</h4>
+                                <p class="text-pink-200 text-lg">拍攝經典彩虹牆照片</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-highlight border-yellow-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-yellow-500 to-red-600 rounded-full p-3 glow-box float-anim" style="animation-delay: 0.5s;">
+                                <span class="text-3xl">🍜</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-yellow-300 font-bold text-xl mb-1">⏰ 13:00 ⭐</div>
+                                <h4 class="text-2xl font-black text-white mb-1 neon-yellow" style="text-shadow: none;">午餐時光</h4>
+                                <p class="text-yellow-200 text-lg">最後的美食巡禮</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-blue-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">🚕</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-blue-400 font-bold text-xl mb-1">⏰ 15:50</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">前往機場</h4>
+                                <p class="text-gray-400 text-lg">搭乘機場快線或巴士</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-indigo-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">🛫</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-indigo-400 font-bold text-xl mb-1">⏰ 16:50</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">抵達機場</h4>
+                                <p class="text-gray-400 text-lg">辦理登機手續</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item border-purple-500 rounded-xl p-5">
+                        <div class="flex gap-4 items-center">
+                            <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-full p-3 glow-box">
+                                <span class="text-3xl">✈️</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-purple-400 font-bold text-xl mb-1">⏰ 18:50</div>
+                                <h4 class="text-2xl font-bold text-white mb-1">返程起飛</h4>
+                                <p class="text-gray-400 text-lg">HX282 航班，帶著滿滿回憶回家</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Tab -->
+        <div id="content-food" class="hidden fade-in">
+            <div class="retro-card rounded-3xl p-8">
+                <h2 class="text-5xl font-black mb-10 neon-yellow text-center" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                    🍽️ 必吃美食清單
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-10">
+                    <a href="https://www.google.com/maps/search/祥興記上海生煎包+尖沙咀" target="_blank" class="retro-card rounded-2xl p-6 food-item">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl float-anim">🥟</span>
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-yellow-400 mb-2">祥興記上海生煎包</h3>
+                                <div class="flex items-center gap-2 text-cyan-400 text-lg">
+                                    <span>📍</span>
+                                    <span class="font-bold">尖沙咀</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-2 sans-font">點擊查看地圖 →</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/一點心+尖沙咀" target="_blank" class="retro-card rounded-2xl p-6 food-item">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl float-anim" style="animation-delay: 0.2s;">🥢</span>
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-pink-400 mb-2">一點心</h3>
+                                <div class="flex items-center gap-2 text-cyan-400 text-lg">
+                                    <span>📍</span>
+                                    <span class="font-bold">尖沙咀</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-2 sans-font">點擊查看地圖 →</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/Bakehouse+尖沙咀" target="_blank" class="retro-card rounded-2xl p-6 food-item">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl float-anim" style="animation-delay: 0.4s;">🥐</span>
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-orange-400 mb-2">Bakehouse</h3>
+                                <div class="flex items-center gap-2 text-cyan-400 text-lg">
+                                    <span>📍</span>
+                                    <span class="font-bold">尖沙咀</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-2 sans-font">點擊查看地圖 →</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/一樂燒鵝+中環" target="_blank" class="retro-card rounded-2xl p-6 food-item">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl float-anim" style="animation-delay: 0.6s;">🦆</span>
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-red-400 mb-2">一樂燒鵝</h3>
+                                <div class="flex items-center gap-2 text-cyan-400 text-lg">
+                                    <span>📍</span>
+                                    <span class="font-bold">中環</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-2 sans-font">點擊查看地圖 →</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/蘭芳園+中環" target="_blank" class="retro-card rounded-2xl p-6 food-item">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl float-anim" style="animation-delay: 0.8s;">☕</span>
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-amber-400 mb-2">蘭芳園</h3>
+                                <div class="flex items-center gap-2 text-cyan-400 text-lg">
+                                    <span>📍</span>
+                                    <span class="font-bold">中環</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-2 sans-font">點擊查看地圖 →</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/澳洲牛奶公司+香港" target="_blank" class="retro-card rounded-2xl p-6 food-item">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl float-anim" style="animation-delay: 1s;">🥛</span>
+                            <div class="flex-1">
+                                <h3 class="text-3xl font-black text-blue-400 mb-2">澳洲牛奶公司</h3>
+                                <div class="text-gray-400 text-lg">經典港式茶餐廳</div>
+                                <div class="text-sm text-gray-500 mt-2 sans-font">點擊查看地圖 →</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="retro-card rounded-2xl p-8 border-yellow-500">
+                    <h3 class="text-3xl font-black neon-yellow mb-6 text-center">✨ 推薦必點 ✨</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-xl text-white">
+                        <div class="flex items-center gap-3 p-3 bg-black/40 rounded-xl">
+                            <span class="text-3xl">🥟</span>
+                            <span class="font-bold">上海生煎包</span>
+                            <span class="text-yellow-400">— 皮酥內多汁</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-black/40 rounded-xl">
+                            <span class="text-3xl">🦆</span>
+                            <span class="font-bold">一樂燒鵝</span>
+                            <span class="text-pink-400">— 米其林推薦</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-black/40 rounded-xl">
+                            <span class="text-3xl">☕</span>
+                            <span class="font-bold">蘭芳園</span>
+                            <span class="text-cyan-400">— 絲襪奶茶始祖</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-black/40 rounded-xl">
+                            <span class="text-3xl">🥛</span>
+                            <span class="font-bold">澳洲牛奶公司</span>
+                            <span class="text-orange-400">— 炒蛋多士必點</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spots Tab -->
+        <div id="content-spots" class="hidden fade-in">
+            <div class="retro-card rounded-3xl p-8">
+                <h2 class="text-5xl font-black mb-10 neon-pink text-center" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                    📸 打卡景點
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-8 mb-10">
+                    <div class="retro-card rounded-2xl p-8 text-center hover:scale-105 transition-all">
+                        <span class="text-7xl block mb-4 float-anim">🏮</span>
+                        <h3 class="text-3xl font-black text-red-400">嘉咸街</h3>
+                        <p class="text-gray-400 mt-2">傳統市集風情</p>
+                    </div>
+
+                    <div class="retro-card rounded-2xl p-8 text-center hover:scale-105 transition-all">
+                        <span class="text-7xl block mb-4 float-anim" style="animation-delay: 0.3s;">🏛️</span>
+                        <h3 class="text-3xl font-black text-yellow-400">中環街市</h3>
+                        <p class="text-gray-400 mt-2">古蹟活化建築</p>
+                    </div>
+
+                    <div class="retro-card rounded-2xl p-8 text-center hover:scale-105 transition-all">
+                        <span class="text-7xl block mb-4 float-anim" style="animation-delay: 0.6s;">🌈</span>
+                        <h3 class="text-3xl font-black text-pink-400">彩虹邨</h3>
+                        <p class="text-gray-400 mt-2">Instagram 熱點</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="retro-card rounded-2xl p-6 border-cyan-500">
+                        <h3 class="text-2xl font-black neon-cyan mb-4">🌃 太平山頂</h3>
+                        <p class="text-gray-300 text-lg leading-relaxed">
+                            欣賞維多利亞港全景，最佳拍照時間為傍晚黃昏至夜晚燈火璀璨時刻。霓虹燈海盡收眼底！
+                        </p>
+                    </div>
+
+                    <div class="retro-card rounded-2xl p-6 border-pink-500">
+                        <h3 class="text-2xl font-black neon-pink mb-4">🌈 彩虹邨</h3>
+                        <p class="text-gray-300 text-lg leading-relaxed">
+                            Instagram 超夯打卡點，色彩繽紛的籃球場與建築，記得早上光線較佳，拍出港式復古大片！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Tab -->
+        <div id="content-info" class="hidden fade-in space-y-8">
+            
+            <!-- Flight Info -->
+            <div class="retro-card rounded-3xl overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-900 to-indigo-900 px-8 py-6 hk-pattern">
+                    <h2 class="text-4xl font-black neon-cyan" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                        ✈️ 航班資訊
+                    </h2>
+                </div>
+                <div class="p-8 grid md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-blue-950 to-indigo-950 rounded-2xl p-6 border-2 border-blue-500">
+                        <div class="text-center mb-4">
+                            <span class="text-6xl float-anim">🛫</span>
+                        </div>
+                        <h3 class="text-3xl font-black text-blue-400 mb-4 text-center">去程</h3>
+                        <div class="space-y-3 text-xl text-white">
+                            <p><strong class="text-cyan-400">日期：</strong>11/2 (六)</p>
+                            <p><strong class="text-cyan-400">時間：</strong>11:50</p>
+                            <p><strong class="text-cyan-400">航班：</strong>HX253</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-950 to-pink-950 rounded-2xl p-6 border-2 border-purple-500">
+                        <div class="text-center mb-4">
+                            <span class="text-6xl float-anim" style="animation-delay: 0.5s;">🛬</span>
+                        </div>
+                        <h3 class="text-3xl font-black text-purple-400 mb-4 text-center">回程</h3>
+                        <div class="space-y-3 text-xl text-white">
+                            <p><strong class="text-pink-400">日期：</strong>11/3 (日)</p>
+                            <p><strong class="text-pink-400">時間：</strong>18:50</p>
+                            <p><strong class="text-pink-400">航班：</strong>HX282</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hotel Info -->
+            <div class="retro-card rounded-3xl overflow-hidden">
+                <div class="bg-gradient-to-r from-teal-900 to-emerald-900 px-8 py-6 hk-pattern">
+                    <h2 class="text-4xl font-black neon-green" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                        🏨 住宿資訊
+                    </h2>
+                </div>
+                <div class="p-8">
+                    <div class="bg-gradient-to-br from-teal-950 to-emerald-950 rounded-2xl p-10 border-2 border-teal-500 text-center">
+                        <span class="text-7xl block mb-6 float-anim">🏨</span>
+                        <h3 class="text-4xl font-black neon-green mb-3">木的地酒店</h3>
+                        <p class="text-teal-300 text-2xl font-bold">📍 佐敦地區</p>
+                        <p class="text-gray-400 text-lg mt-4">交通便利 · 鄰近地鐵</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reminders -->
+            <div class="retro-card rounded-3xl overflow-hidden">
+                <div class="bg-gradient-to-r from-red-900 to-pink-900 px-8 py-6 hk-pattern">
+                    <h2 class="text-4xl font-black neon-yellow" style="letter-spacing: 0.1em; font-family: 'Noto Serif TC', serif;">
+                        ⚠️ 重要提醒
+                    </h2>
+                </div>
+                <div class="p-8">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-4 bg-gradient-to-r from-yellow-950 to-orange-950 rounded-xl p-5 border-2 border-yellow-500">
+                            <span class="text-5xl">💵</span>
+                            <span class="text-2xl font-black text-yellow-400">港幣現金</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-gradient-to-r from-pink-950 to-red-950 rounded-xl p-5 border-2 border-pink-500">
+                            <span class="text-5xl">🎫</span>
+                            <span class="text-2xl font-black text-pink-400">八達通卡</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-gradient-to-r from-cyan-950 to-blue-950 rounded-xl p-5 border-2 border-cyan-500">
+                            <span class="text-5xl">📕</span>
+                            <span class="text-2xl font-black text-cyan-400">護照</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-gradient-to-r from-purple-950 to-indigo-950 rounded-xl p-5 border-2 border-purple-500">
+                            <span class="text-5xl">📄</span>
+                            <span class="text-2xl font-black text-purple-400">港簽（紙本）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t-2 border-yellow-500/30 py-10 mt-16">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="mb-4">
+                <span class="text-5xl float-anim">🇭🇰</span>
+            </div>
+            <h3 class="text-3xl font-black neon-pink mb-2" style="letter-spacing: 0.2em; font-family: 'Noto Serif TC', serif;">香港之旅</h3>
+            <p class="text-xl neon-yellow mb-2" style="font-family: 'Noto Serif TC', serif;">美好回憶 · 永誌不忘</p>
+            <p class="text-gray-500 text-lg">2024.11.2 - 2024.11.3</p>
+            <div class="mt-6 flex items-center justify-center gap-4">
+                <span class="text-3xl">🎂</span>
+                <span class="text-3xl">🌃</span>
+                <span class="text-3xl">🍜</span>
+                <span class="text-3xl">📸</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Google Maps Script -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&callback=initMap"></script>
+    
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all content
+            ['itinerary', 'map', 'food', 'spots', 'info'].forEach(tab => {
+                document.getElementById('content-' + tab).classList.add('hidden');
+            });
+
+            // Show selected content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+
+            // Update tab buttons
+            ['itinerary', 'map', 'food', 'spots', 'info'].forEach(tab => {
+                const button = document.getElementById('tab-' + tab);
+                if (tab === tabName) {
+                    button.className = 'tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gradient-to-r from-red-600 to-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-500/50';
+                } else {
+                    button.className = 'tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gray-900 text-yellow-400 border-2 border-gray-700';
+                }
+            });
+
+            // Update button colors based on tab
+            const colors = {
+                'itinerary': { from: 'from-red-600', to: 'to-pink-600', border: 'border-pink-400', shadow: 'shadow-pink-500/50', text: 'text-white' },
+                'map': { from: 'from-green-600', to: 'to-emerald-600', border: 'border-green-400', shadow: 'shadow-green-500/50', text: 'text-white' },
+                'food': { from: 'from-yellow-600', to: 'to-orange-600', border: 'border-yellow-400', shadow: 'shadow-yellow-500/50', text: 'text-white' },
+                'spots': { from: 'from-cyan-600', to: 'to-blue-600', border: 'border-cyan-400', shadow: 'shadow-cyan-500/50', text: 'text-white' },
+                'info': { from: 'from-purple-600', to: 'to-pink-600', border: 'border-purple-400', shadow: 'shadow-purple-500/50', text: 'text-white' }
+            };
+            
+            const selectedButton = document.getElementById('tab-' + tabName);
+            const color = colors[tabName];
+            selectedButton.className = `tab-btn px-8 py-3 rounded-full font-black text-lg whitespace-nowrap bg-gradient-to-r ${color.from} ${color.to} ${color.text} border-2 ${color.border} shadow-lg ${color.shadow}`;
+        }
+        
+        // Google Maps initialization
+        function initMap() {
+            const locations = [
+                { lat: 22.3193, lng: 114.1694, title: '🏨 木的地酒店', type: 'hotel' },
+                { lat: 22.2783, lng: 114.1747, title: '🥟 祥興記上海生煎包', type: 'food' },
+                { lat: 22.2965, lng: 114.1722, title: '🥢 一點心', type: 'food' },
+                { lat: 22.2965, lng: 114.1722, title: '🥐 Bakehouse', type: 'food' },
+                { lat: 22.2812, lng: 114.1580, title: '🦆 一樂燒鵝', type: 'food' },
+                { lat: 22.2812, lng: 114.1580, title: '☕ 蘭芳園', type: 'food' },
+                { lat: 22.3200, lng: 114.1700, title: '🥛 澳洲牛奶公司', type: 'food' },
+                { lat: 22.3964, lng: 114.1095, title: '🌃 太平山頂', type: 'spot' },
+                { lat: 22.3350, lng: 114.1560, title: '🌈 彩虹邨', type: 'spot' },
+                { lat: 22.2840, lng: 114.1577, title: '✈️ 香港國際機場', type: 'transport' }
+            ];
+
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: 22.3193, lng: 114.1694 },
+                styles: [
+                    { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
+                    { elementType: 'labels.text.stroke', stylers: [{ color: '#1a1a1a' }] },
+                    { elementType: 'labels.text.fill', stylers: [{ color: '#ffcc66' }] },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#2a2a2a' }]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#0a1a2a' }]
+                    }
+                ]
+            });
+
+            locations.forEach(location => {
+                const marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.title
+                });
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: `<div style="color: #000; font-weight: bold; font-size: 16px;">${location.title}</div>`
+                });
+
+                marker.addListener('click', () => {
+                    infowindow.open(map, marker);
+                });
+            });
+        }
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed'));
+            });
+        }
+    </script>
+</body>
+</html>
